@@ -29,21 +29,29 @@ class _MyHomePageState extends State<MyHomePage> {
     ).ripple(() {}, borderRadius: BorderRadius.all(Radius.circular(13)));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height - 210,
-      child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        dragStartBehavior: DragStartBehavior.down,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            TableEventsExample(),
-          ],
-        ),
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Container(
+  //     height: MediaQuery.of(context).size.height - 210,
+  //     child: SingleChildScrollView(
+  //       physics: BouncingScrollPhysics(),
+  //       dragStartBehavior: DragStartBehavior.down,
+  //       child: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         mainAxisAlignment: MainAxisAlignment.start,
+  //         children: <Widget>[
+  //           TableEventsExample(),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+  Widget build (BuildContext context){
+    return Scaffold(
+      body: Container(
+        child: TableEventsExample(),
       ),
     );
   }
+  
 }

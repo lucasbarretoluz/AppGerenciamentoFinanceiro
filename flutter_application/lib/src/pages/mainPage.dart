@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/src/pages/qrcodePage.dart';
 import 'package:flutter_application/src/themes/light_color.dart';
 import 'package:flutter_application/src/themes/theme.dart';
 import 'package:flutter_application/src/widgets/BottomNavigationBar/bottom_navigation_bar.dart';
 import 'package:flutter_application/src/widgets/calendar.dart';
 import 'package:flutter_application/src/widgets/extentions.dart';
+
+import 'homePage.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key, required this.title}) : super(key: key);
@@ -102,7 +105,15 @@ class _MainPageState extends State<MainPage> {
                         duration: Duration(milliseconds: 300),
                         switchInCurve: Curves.easeInToLinear,
                         switchOutCurve: Curves.easeOutBack,
-                        child: TableEventsExample(),
+                        child: isHomePageSelected
+                            ? MyHomePage(
+                                title: '',
+                              )
+                            : Align(
+                                alignment: Alignment.topCenter,
+                                child: QRCodePage(),
+                              ),
+                              
                       ),
                     )
                   ],
