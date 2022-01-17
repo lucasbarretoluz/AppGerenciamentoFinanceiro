@@ -1,172 +1,127 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application/src/services/auth_services.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_application/src/pages/mainPage.dart';
+import 'package:flutter_application/src/themes/light_color.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class loginPage extends StatefulWidget {
+  const loginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _loginPageState createState() => _loginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final formKey = GlobalKey<FormState>();
-  final email = TextEditingController();
-  final senha = TextEditingController();
+class _loginPageState extends State<loginPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  bool isLogin = true;
-  late String titulo;
-  late String actionButton;
-  late String toggleButton;
-   bool loading = false;
+  bool isLoggingIn = false;
 
-
-
-  @override
-  void initState() {
-    super.initState();
-    setFormAction(true);
-  }
-
-  setFormAction(bool action) {
+  _login() async {
     setState(() {
-      if (isLogin) {
-        titulo = 'Bem vindo';
-        actionButton = 'Login';
-        toggleButton = 'Cadastre-se agora';
-      } else {
-        titulo = 'Crie sua conta';
-        actionButton = 'Cadastrar';
-        toggleButton = 'Voltar ao Login';
-      }
+      isLoggingIn = true;
     });
-  }
 
-  login() async {
-    setState(() => loading = true);
     try {
-      await context.read<AuthService>().login(email.text, senha.text);
-    } on AuthException catch (e) {
-      setState(() => loading = false);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.message)));
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => MainPage(title: '')));
+    } on FirebaseAuthException catch (e) {
+      var message = '';
+
+      switch (e.code) {
+        case 'invalid-email':
+          message = 'O e-mail está incorreto.';
+          break;
+        case 'user-disable':
+          message = 'O usuario está incorreto.';
+          break;
+        case 'user-not-found':
+          message = 'O usuario não foi encontrado.';
+          break;
+        case 'wrong-password':
+          message = 'Senha incorreta.';
+          break;
+      }
+
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Falha ao fazer login'),
+              content: Text(message),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('OK'))
+              ],
+            );
+          });
+    } finally {
+      setState(() {
+        isLoggingIn = false;
+      });
     }
   }
 
-  registrar() async {
-    setState(() => loading = true);
-    try {
-      await context.read<AuthService>().registrar(email.text, senha.text);
-    } on AuthException catch (e) {
-      setState(() => loading = false);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.message)));
-    }
-  }
-  
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(top: 100),
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  titulo,
-                  style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: -1.5,
-                  ),
-                ),
-                 Padding(
-                  padding: EdgeInsets.all(24),
-                  child: TextFormField(
-                    controller: email,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Email',
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Informe o email corretamente!';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                 Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                  child: TextFormField(
-                    controller: senha,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Senha',
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Informa sua senha!';
-                      } else if (value.length < 6) {
-                        return 'Sua senha deve ter no mínimo 6 caracteres';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(24.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        if (isLogin) {
-                          login();
-                        } else {
-                          registrar();
-                        }
-                      }
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: (loading)
-                          ? [
-                              Padding(
-                                padding: EdgeInsets.all(16),
-                                child: SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )
-                            ]
-                          : [
-                              Icon(Icons.check),
-                              Padding(
-                                padding: EdgeInsets.all(16.0),
-                                child: Text(
-                                  actionButton,
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              ),
-                            ],
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => setFormAction(!isLogin),
-                  child: Text(toggleButton),
-                ),
-              ],
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Faça seu Login',
+            style: TextStyle(
+                color: LightColor.orange,
+                fontSize: 25,
+                fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 25),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+            child: TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.emailAddress,
             ),
           ),
-        ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+            child: TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(
+                labelText: 'Senha',
+                border: OutlineInputBorder(),
+              ),
+              obscureText: true,
+            ),
+          ),
+          if (!isLoggingIn)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                    onPressed: () {
+                      _login();
+                    },
+                    child: Text('Login')),
+              ),
+            ),
+          if (isLoggingIn) ...[
+            const SizedBox(height: 16),
+            Center(child: CircularProgressIndicator()),
+          ]
+        ],
       ),
     );
   }
