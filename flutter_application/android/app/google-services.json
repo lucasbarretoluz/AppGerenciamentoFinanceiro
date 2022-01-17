@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "450952141563",
+    "project_id": "appfinanceiro-cc8a9",
+    "storage_bucket": "appfinanceiro-cc8a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450952141563:android:d64a613cf2be843a2e6e5e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "450952141563-7sjpo6em2e44kt919a6be89rqv6i1kan.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-79Nqvh7mpvPxm7chfPwJJRUPSw9QyO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "450952141563-7sjpo6em2e44kt919a6be89rqv6i1kan.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

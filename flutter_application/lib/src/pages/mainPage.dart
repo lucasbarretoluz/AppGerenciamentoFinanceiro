@@ -6,6 +6,7 @@ import 'package:flutter_application/src/widgets/BottomNavigationBar/bottom_navig
 import 'package:flutter_application/src/widgets/calendar.dart';
 import 'package:flutter_application/src/widgets/extentions.dart';
 
+import 'config.dart';
 import 'homePage.dart';
 
 class MainPage extends StatefulWidget {
@@ -19,6 +20,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   bool isHomePageSelected = true;
+  int intPageSelected = 0;
 
   get child => null;
   Widget _appBar() {
@@ -65,15 +67,42 @@ class _MainPageState extends State<MainPage> {
   }
 
   void onBottomIconPressed(int index) {
-    if (index == 0 || index == 1) {
-      setState(() {
-        isHomePageSelected = true;
-      });
-    } else {
-      setState(() {
-        isHomePageSelected = false;
-      });
+    switch (index) {
+      case 0:
+        setState(() {
+          intPageSelected = 0;
+        });
+        return;
+      case 1:
+        setState(() {
+          intPageSelected = 1;
+        });
+        return;
+      case 2:
+        setState(() {
+          intPageSelected = 2;
+        });
+        break;
+      case 3:
+        setState(() {
+          intPageSelected = 3;
+        });
+        break;
+      default:
     }
+  }
+
+  Widget thePage(int intPageSelected) {
+    List<Widget> paginas = [
+      MyHomePage(
+        title: '',
+      ),
+      TableEventsExample(),
+      QRCodePage(),
+      ConfigPage()
+    ];
+
+    return paginas[intPageSelected];
   }
 
   @override
@@ -105,15 +134,7 @@ class _MainPageState extends State<MainPage> {
                         duration: Duration(milliseconds: 300),
                         switchInCurve: Curves.easeInToLinear,
                         switchOutCurve: Curves.easeOutBack,
-                        child: isHomePageSelected
-                            ? MyHomePage(
-                                title: '',
-                              )
-                            : Align(
-                                alignment: Alignment.topCenter,
-                                child: QRCodePage(),
-                              ),
-                              
+                        child: thePage(intPageSelected),
                       ),
                     )
                   ],
