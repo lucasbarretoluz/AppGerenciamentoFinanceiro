@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/src/widgets/extentions.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 class Singup extends StatefulWidget {
   const Singup({Key? key}) : super(key: key);
 
@@ -14,6 +15,8 @@ class _SingupState extends State<Singup> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+
+  var loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +47,9 @@ class _SingupState extends State<Singup> {
             child: ElevatedButton(
               onPressed: () {
                 if (_formkey.currentState != null &&
-                    _formkey.currentState!.validate()) {}
+                    _formkey.currentState!.validate()) {
+                  _singUp();
+                }
               },
               child: Text('Criar Conta'),
             ),
@@ -70,7 +75,68 @@ class _SingupState extends State<Singup> {
     }
     return null;
   }
+
+  Future _singUp() async {
+    setState(() {
+      loading = true;
+    });
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text, password: _passwordController.text
+        );
+      await FirebaseFirestore.instance.collection('users').add({
+        'email': _emailController.text,
+        'name': _nameController.text,
+      });
+
+      await showDialog(context: context, builder: (context) => AlertDialog(
+         title: Text('Conta criada com sucesso'),
+         content: Text('Sua conta foi criada, você já pode logar!'),
+         actions: [
+           TextButton(onPressed: (){
+             Navigator.of(context).pop();
+           }, child: Text('OK'))],
+      ));
+      Navigator.of(context).pop();
+    }on FirebaseAuthException catch (e){
+      _handleSingUpError(e);
+      setState(() {
+        loading = false;
+      });
+
+    }
+  }
+
+  void _handleSingUpError ( FirebaseAuthException e) {
+    String messageToDisplay;
+    switch (e.code) {
+      case 'email-already-in-use':
+        messageToDisplay = 'Este email já está sendo usado.';
+        break;
+      case 'invalid-email':
+        messageToDisplay = 'O email é invalido.';
+        break;  
+      case 'operation-not-allowed':
+        messageToDisplay = 'Esta operação não é permitida';  
+        break;
+      case 'weak-password':
+        messageToDisplay = 'A senha inserida é muito fraca.';  
+        break;
+      default:
+        messageToDisplay = 'Algo de errado ocorreu.';  
+        break;     
+    }
+    showDialog(context: context, builder: (context) => AlertDialog(
+      title: Text('Criar conta falhou'),
+      content: Text(messageToDisplay),
+      actions: [TextButton(onPressed: (){
+        Navigator.of(context).pop();
+      }, child: Text('OK'))],
+    ));
+  }
 }
+
+
 
 class _TextField extends StatelessWidget {
   final TextEditingController controller;
