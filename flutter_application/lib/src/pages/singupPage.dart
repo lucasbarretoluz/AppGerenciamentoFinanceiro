@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application/src/widgets/extentions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Singup extends StatefulWidget {
   const Singup({Key? key}) : super(key: key);
 
@@ -42,18 +42,29 @@ class _SingupState extends State<Singup> {
               password: true,
               validator: _confirmPasswordValidator),
           const SizedBox(height: 15),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () {
-                if (_formkey.currentState != null &&
-                    _formkey.currentState!.validate()) {
-                  _singUp();
-                }
-              },
-              child: Text('Criar Conta'),
-            ),
-          )
+          _TextField(
+              label: 'Confirmar senha',
+              controller: _confirmPasswordController,
+              password: true,
+              validator: _confirmPasswordValidator),
+          const SizedBox(height: 15),
+          if (loading) ...[
+            Center(child: CircularProgressIndicator()),
+          ],
+          if (!loading) ...[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_formkey.currentState != null &&
+                      _formkey.currentState!.validate()) {
+                    _singUp();
+                  }
+                },
+                child: Text('Criar Conta'),
+              ),
+            )
+          ],
         ]),
       ),
     );
@@ -82,32 +93,35 @@ class _SingupState extends State<Singup> {
     });
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text, password: _passwordController.text
-        );
+          email: _emailController.text, password: _passwordController.text);
       await FirebaseFirestore.instance.collection('users').add({
         'email': _emailController.text,
         'name': _nameController.text,
       });
 
-      await showDialog(context: context, builder: (context) => AlertDialog(
-         title: Text('Conta criada com sucesso'),
-         content: Text('Sua conta foi criada, você já pode logar!'),
-         actions: [
-           TextButton(onPressed: (){
-             Navigator.of(context).pop();
-           }, child: Text('OK'))],
-      ));
+      await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text('Conta criada com sucesso'),
+                content: Text('Sua conta foi criada, você já pode logar!'),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('OK'))
+                ],
+              ));
       Navigator.of(context).pop();
-    }on FirebaseAuthException catch (e){
+    } on FirebaseAuthException catch (e) {
       _handleSingUpError(e);
       setState(() {
         loading = false;
       });
-
     }
   }
 
-  void _handleSingUpError ( FirebaseAuthException e) {
+  void _handleSingUpError(FirebaseAuthException e) {
     String messageToDisplay;
     switch (e.code) {
       case 'email-already-in-use':
@@ -115,28 +129,32 @@ class _SingupState extends State<Singup> {
         break;
       case 'invalid-email':
         messageToDisplay = 'O email é invalido.';
-        break;  
+        break;
       case 'operation-not-allowed':
-        messageToDisplay = 'Esta operação não é permitida';  
+        messageToDisplay = 'Esta operação não é permitida';
         break;
       case 'weak-password':
-        messageToDisplay = 'A senha inserida é muito fraca.';  
+        messageToDisplay = 'A senha inserida é muito fraca.';
         break;
       default:
-        messageToDisplay = 'Algo de errado ocorreu.';  
-        break;     
+        messageToDisplay = 'Algo de errado ocorreu.';
+        break;
     }
-    showDialog(context: context, builder: (context) => AlertDialog(
-      title: Text('Criar conta falhou'),
-      content: Text(messageToDisplay),
-      actions: [TextButton(onPressed: (){
-        Navigator.of(context).pop();
-      }, child: Text('OK'))],
-    ));
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Criar conta falhou'),
+              content: Text(messageToDisplay),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('OK'))
+              ],
+            ));
   }
 }
-
-
 
 class _TextField extends StatelessWidget {
   final TextEditingController controller;

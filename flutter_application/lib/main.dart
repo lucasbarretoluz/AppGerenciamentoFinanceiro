@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application/src/pages/loginPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application/src/pages/qrcodePage.dart';
 import 'package:flutter_application/src/pages/singupPage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'src/themes/theme.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.lightTheme.copyWith(),
             debugShowCheckedModeBanner: false,
 
-            home: loginPage(),
+            home: QRCodePage(),
             //oginPage(),
             // routes: Routes.getRoute(),
             // initialRoute: '/',

@@ -59,10 +59,23 @@ class _QRCodePageState extends State<QRCodePage> {
               icon: Icon(Icons.qr_code),
               label: Text('Validar'),
             ),
+            const SizedBox(height: 50),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                decoration: InputDecoration(
+                    hintText: 'Url da nota fiscal',
+                    border: OutlineInputBorder()),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child:
+                  ElevatedButton(onPressed: () {}, child: Text('Enviar nota')),
+            ),
           ],
         ),
       ),
     );
   }
 }
-
