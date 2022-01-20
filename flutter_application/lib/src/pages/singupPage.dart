@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application/src/widgets/submitButton.dart';
 
 class Singup extends StatefulWidget {
   const Singup({Key? key}) : super(key: key);
@@ -52,18 +53,27 @@ class _SingupState extends State<Singup> {
             Center(child: CircularProgressIndicator()),
           ],
           if (!loading) ...[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  if (_formkey.currentState != null &&
-                      _formkey.currentState!.validate()) {
-                    _singUp();
-                  }
-                },
-                child: Text('Criar Conta'),
-              ),
-            )
+            SubmitButton(
+              onPressed: () {
+                if (_formkey.currentState != null &&
+                    _formkey.currentState!.validate()) {
+                  _singUp();
+                }
+              },
+              padding: 16,
+            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: ElevatedButton(
+            //     onPressed: () {
+            //       if (_formkey.currentState != null &&
+            //           _formkey.currentState!.validate()) {
+            //         _singUp();
+            //       }
+            //     },
+            //     child: Text('Criar Conta'),
+            //   ),
+            // )
           ],
         ]),
       ),
@@ -93,13 +103,16 @@ class _SingupState extends State<Singup> {
     });
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text, password: _passwordController.text);
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
       await FirebaseFirestore.instance.collection('users').add({
         'email': _emailController.text,
         'name': _nameController.text,
       });
 
-      await showDialog(
+       await showDialog(
           context: context,
           builder: (context) => AlertDialog(
                 title: Text('Conta criada com sucesso'),

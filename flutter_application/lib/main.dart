@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.lightTheme.copyWith(),
             debugShowCheckedModeBanner: false,
 
-            home: QRCodePage(),
+            home: Singup(),
             //oginPage(),
             // routes: Routes.getRoute(),
             // initialRoute: '/',
