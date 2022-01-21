@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class SubmitButton extends StatelessWidget {
   const SubmitButton(
-      {required this.onPressed, this.text = 'Enviar', this.padding = 0});
+      {required this.onPressed, this.text = 'Criar conta', this.padding = 0});
 
   final VoidCallback onPressed;
   final String text;

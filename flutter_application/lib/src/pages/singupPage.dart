@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_application/src/widgets/submitButton.dart';
+import 'package:flutter_application/src/themes/light_color.dart';
 
 class Singup extends StatefulWidget {
   const Singup({Key? key}) : super(key: key);
@@ -22,60 +22,96 @@ class _SingupState extends State<Singup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        key: _formkey,
-        child: ListView(children: [
-          const SizedBox(height: 15),
-          _TextField(
-              label: 'Name',
-              controller: _nameController,
-              validator: _requiredValidator),
-          const SizedBox(height: 15),
-          _TextField(
-              label: 'Email',
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              validator: _requiredValidator),
-          const SizedBox(height: 15),
-          _TextField(
-              label: 'Senha',
-              controller: _passwordController,
-              password: true,
-              validator: _confirmPasswordValidator),
-          const SizedBox(height: 15),
-          _TextField(
-              label: 'Confirmar senha',
-              controller: _confirmPasswordController,
-              password: true,
-              validator: _confirmPasswordValidator),
-          const SizedBox(height: 15),
-          if (loading) ...[
-            Center(child: CircularProgressIndicator()),
-          ],
-          if (!loading) ...[
-            SubmitButton(
-              onPressed: () {
-                if (_formkey.currentState != null &&
-                    _formkey.currentState!.validate()) {
-                  _singUp();
-                }
-              },
-              padding: 16,
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: ElevatedButton(
-            //     onPressed: () {
-            //       if (_formkey.currentState != null &&
-            //           _formkey.currentState!.validate()) {
-            //         _singUp();
-            //       }
-            //     },
-            //     child: Text('Criar Conta'),
-            //   ),
-            // )
-          ],
-        ]),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Form(
+          key: _formkey,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+            child: ListView(children: [
+              const SizedBox(height: 16),
+              Container(
+                  height: 125.0,
+                  width: 200.0,
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: Text(
+                          'Registre-se',
+                          style: TextStyle(
+                              color: LightColor.orange,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 50.0),
+                        ),
+                      ),
+                    ],
+                  )),
+              const SizedBox(height: 15),
+              _TextField(
+                  label: 'Name',
+                  controller: _nameController,
+                  validator: _requiredValidator),
+              const SizedBox(height: 15),
+              _TextField(
+                  label: 'Email',
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: _requiredValidator),
+              const SizedBox(height: 15),
+              _TextField(
+                  label: 'Senha',
+                  controller: _passwordController,
+                  password: true,
+                  validator: _confirmPasswordValidator),
+              const SizedBox(height: 15),
+              _TextField(
+                  label: 'Confirmar senha',
+                  controller: _confirmPasswordController,
+                  password: true,
+                  validator: _confirmPasswordValidator),
+              const SizedBox(height: 15),
+              if (loading) ...[
+                Center(child: CircularProgressIndicator()),
+              ],
+              if (!loading) ...[
+                // SubmitButton(
+                //   onPressed: () {
+                //     if (_formkey.currentState != null &&
+                //         _formkey.currentState!.validate()) {
+                //       _singUp();
+                //     }
+                //   },
+                //   padding: 16,
+                // ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formkey.currentState != null &&
+                          _formkey.currentState!.validate()) {
+                        _singUp();
+                      }
+                    },
+                    child: Text('Criar Conta'),
+                  ),
+                )
+              ],
+              SizedBox(height: 20.0),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Voltar',
+                        style: TextStyle(
+                            color: LightColor.orange,
+                            fontFamily: 'Trueno',
+                            decoration: TextDecoration.underline)))
+              ])
+            ]),
+          ),
+        ),
       ),
     );
   }
@@ -112,7 +148,7 @@ class _SingupState extends State<Singup> {
         'name': _nameController.text,
       });
 
-       await showDialog(
+      await showDialog(
           context: context,
           builder: (context) => AlertDialog(
                 title: Text('Conta criada com sucesso'),

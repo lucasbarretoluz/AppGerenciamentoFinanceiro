@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/src/pages/mainPage.dart';
+import 'package:flutter_application/src/pages/singupPage.dart';
 import 'package:flutter_application/src/themes/light_color.dart';
 
 class loginPage extends StatefulWidget {
@@ -74,14 +75,16 @@ class _loginPageState extends State<loginPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            'Faça seu Login',
-            style: TextStyle(
-                color: LightColor.orange,
-                fontSize: 25,
-                fontWeight: FontWeight.w600),
+          Center(
+            child: Text(
+              'Faça seu login',
+              style: TextStyle(
+                  color: LightColor.orange,
+                  fontSize: 40,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
-          const SizedBox(height: 25),
+          const SizedBox(height: 50),
           Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16.0),
             child: TextField(
@@ -117,6 +120,18 @@ class _loginPageState extends State<loginPage> {
                     child: Text('Login')),
               ),
             ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Singup()));
+                  },
+                  child: Text('Registre-se')),
+            ),
+          ),
           if (isLoggingIn) ...[
             const SizedBox(height: 16),
             Center(child: CircularProgressIndicator()),

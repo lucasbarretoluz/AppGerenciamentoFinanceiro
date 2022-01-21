@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/src/pages/homePage.dart';
 import 'package:flutter_application/src/pages/mainPage.dart';
 import 'package:flutter_application/src/pages/qrcodePage.dart';
+import 'package:flutter_application/src/pages/singupPage.dart';
 import 'package:flutter_application/src/widgets/calendar.dart';
 
 class Routes {
@@ -13,6 +14,7 @@ class Routes {
       '/home': (_) => MyHomePage(title: ''),
       '/calendar': (_) => TableEventsExample(),
       '/qr': (_) => QRCodePage(),
+      '/registrer': (_) => Singup(),
     };
   }
 }
