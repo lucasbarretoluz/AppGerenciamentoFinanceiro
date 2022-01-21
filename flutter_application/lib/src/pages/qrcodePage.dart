@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/src/themes/light_color.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'dart:async';
 
@@ -10,8 +11,12 @@ class QRCodePage extends StatefulWidget {
 }
 
 class _QRCodePageState extends State<QRCodePage> {
+  late double height, width;
+
   String ticket = '';
   List<String> tickets = [];
+
+  get children => null;
 
   readQRCode() async {
     String code = await FlutterBarcodeScanner.scanBarcode(
@@ -39,43 +44,78 @@ class _QRCodePageState extends State<QRCodePage> {
 
   @override
   Widget build(BuildContext context) {
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (ticket != '')
-              Padding(
-                padding: EdgeInsets.only(bottom: 24.0),
-                child: Text(
-                  'Ticket: $ticket',
-                  style: TextStyle(fontSize: 20),
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              SizedBox(height: 16),
+              Center(
+                child: Container(
+                  // padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  height: height * .4,
+                  width: width * .9,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[500],
+                    borderRadius: BorderRadius.circular(40),
+                  ),
                 ),
               ),
-            ElevatedButton.icon(
-              onPressed: readQRCode,
-              icon: Icon(Icons.qr_code),
-              label: Text('Validar'),
-            ),
-            const SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    hintText: 'Url da nota fiscal',
-                    border: OutlineInputBorder()),
+              SizedBox(height: 16),
+              Center(
+                child: Container(
+                  height: height * .4,
+                  width: width * .9,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child:
-                  ElevatedButton(onPressed: () {}, child: Text('Enviar nota')),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
+
+      // body: Container(
+      //   height: MediaQuery.of(context).size.height,
+      //   width: MediaQuery.of(context).size.width,
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     crossAxisAlignment: CrossAxisAlignment.center,
+      //     children: [
+      //       if (ticket != '')
+      //         Padding(
+      //           padding: EdgeInsets.only(bottom: 24.0),
+      //           child: Text(
+      //             'Ticket: $ticket',
+      //             style: TextStyle(fontSize: 20),
+      //           ),
+      //         ),
+      //       ElevatedButton.icon(
+      //         onPressed: readQRCode,
+      //         icon: Icon(Icons.qr_code),
+      //         label: Text('Validar'),
+      //       ),
+      //       const SizedBox(height: 50),
+      //       Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child: TextField(
+      //           decoration: InputDecoration(
+      //               hintText: 'Url da nota fiscal',
+      //               border: OutlineInputBorder()),
+      //         ),
+      //       ),
+      //       Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child:
+      //             ElevatedButton(onPressed: () {}, child: Text('Enviar nota')),
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
