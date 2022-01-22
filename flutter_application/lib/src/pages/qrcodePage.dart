@@ -18,6 +18,8 @@ class _QRCodePageState extends State<QRCodePage> {
 
   get children => null;
 
+  get child => null;
+
   readQRCode() async {
     String code = await FlutterBarcodeScanner.scanBarcode(
       "#FFFFFF",
@@ -49,73 +51,83 @@ class _QRCodePageState extends State<QRCodePage> {
     return Scaffold(
       body: Stack(
         children: [
-          Column(
-            children: [
-              SizedBox(height: 16),
-              Center(
-                child: Container(
-                  // padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                  height: height * .4,
-                  width: width * .9,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[500],
-                    borderRadius: BorderRadius.circular(40),
-                  ),
+          Center(
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                Text(
+                  'Cadastre a NF-e',
+                  style: TextStyle(
+                      color: LightColor.orange,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w600),
                 ),
-              ),
-              SizedBox(height: 16),
-              Center(
-                child: Container(
-                  height: height * .4,
-                  width: width * .9,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(40),
-                  ),
+                SizedBox(height: 16),
+                Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: <Widget>[
+                    Container(
+                      height: height * .5,
+                      width: width * .9,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[400],
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 20,
+                      right: 110,
+                      child: ElevatedButton.icon(
+                        onPressed: readQRCode,
+                        icon: Icon(Icons.qr_code),
+                        label: Text('Scanear QR'),
+                      ),
+                    ),
+                    Container(
+                      height: 200,
+                      width: 200,
+                      child: Image.asset('assets/images/qrcode.png'),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                SizedBox(height: 16),
+                Container(
+                    height: height * .3,
+                    width: width * .9,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 15),
+                        Text(
+                          'Adicionar NF-e usando URL da nota:',
+                          style: TextStyle(
+                              color: LightColor.orange,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: TextField(
+                            decoration: InputDecoration(
+                                hintText: 'Link escrito na nota fiscal',
+                                border: OutlineInputBorder()),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                              onPressed: () {}, child: Text('Enviar NF-e')),
+                        ),
+                      ],
+                    )),
+              ],
+            ),
           ),
         ],
       ),
-
-      // body: Container(
-      //   height: MediaQuery.of(context).size.height,
-      //   width: MediaQuery.of(context).size.width,
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     crossAxisAlignment: CrossAxisAlignment.center,
-      //     children: [
-      //       if (ticket != '')
-      //         Padding(
-      //           padding: EdgeInsets.only(bottom: 24.0),
-      //           child: Text(
-      //             'Ticket: $ticket',
-      //             style: TextStyle(fontSize: 20),
-      //           ),
-      //         ),
-      //       ElevatedButton.icon(
-      //         onPressed: readQRCode,
-      //         icon: Icon(Icons.qr_code),
-      //         label: Text('Validar'),
-      //       ),
-      //       const SizedBox(height: 50),
-      //       Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child: TextField(
-      //           decoration: InputDecoration(
-      //               hintText: 'Url da nota fiscal',
-      //               border: OutlineInputBorder()),
-      //         ),
-      //       ),
-      //       Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child:
-      //             ElevatedButton(onPressed: () {}, child: Text('Enviar nota')),
-      //       ),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }
