@@ -16,7 +16,8 @@ class _SingupState extends State<Singup> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-
+  
+  
   var loading = false;
 
   @override
@@ -134,6 +135,7 @@ class _SingupState extends State<Singup> {
   }
 
   Future _singUp() async {
+    
     setState(() {
       loading = true;
     });
@@ -142,10 +144,14 @@ class _SingupState extends State<Singup> {
         email: _emailController.text,
         password: _passwordController.text,
       );
+      
+      final userDoc = await FirebaseFirestore.instance.collection('users').doc().get();
 
       await FirebaseFirestore.instance.collection('users').add({
         'email': _emailController.text,
         'name': _nameController.text,
+        // 'Id_usuario': userDoc
+        
       });
 
       await showDialog(

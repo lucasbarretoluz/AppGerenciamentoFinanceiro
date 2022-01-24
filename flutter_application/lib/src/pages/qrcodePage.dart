@@ -54,7 +54,7 @@ class _QRCodePageState extends State<QRCodePage> {
           Center(
             child: Column(
               children: [
-                SizedBox(height: 20),
+                SizedBox(height: 16),
                 Text(
                   'Cadastre a NF-e',
                   style: TextStyle(
@@ -67,10 +67,10 @@ class _QRCodePageState extends State<QRCodePage> {
                   alignment: AlignmentDirectional.center,
                   children: <Widget>[
                     Container(
-                      height: height * .5,
+                      height: height * .45,
                       width: width * .9,
                       decoration: BoxDecoration(
-                        color: Colors.grey[400],
+                        color: Colors.grey[300],
                         borderRadius: BorderRadius.circular(40),
                       ),
                     ),
@@ -90,12 +90,12 @@ class _QRCodePageState extends State<QRCodePage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 10),
                 Container(
                     height: height * .3,
                     width: width * .9,
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: Column(
@@ -111,6 +111,9 @@ class _QRCodePageState extends State<QRCodePage> {
                         Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: TextField(
+                            onChanged: (text){
+                              ticket = text;
+                            },
                             decoration: InputDecoration(
                                 hintText: 'Link escrito na nota fiscal',
                                 border: OutlineInputBorder()),
@@ -119,7 +122,9 @@ class _QRCodePageState extends State<QRCodePage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ElevatedButton(
-                              onPressed: () {}, child: Text('Enviar NF-e')),
+                              onPressed: () {
+                                print(ticket);
+                              }, child: Text('Enviar NF-e')),
                         ),
                       ],
                     )),

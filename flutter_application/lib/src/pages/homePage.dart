@@ -15,6 +15,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late double height, width;
+
   Widget _icon(IconData icon, {Color color = LightColor.iconColor}) {
     return Container(
       padding: EdgeInsets.all(10),
@@ -29,29 +31,56 @@ class _MyHomePageState extends State<MyHomePage> {
     ).ripple(() {}, borderRadius: BorderRadius.all(Radius.circular(13)));
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Container(
-  //     height: MediaQuery.of(context).size.height - 210,
-  //     child: SingleChildScrollView(
-  //       physics: BouncingScrollPhysics(),
-  //       dragStartBehavior: DragStartBehavior.down,
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         mainAxisAlignment: MainAxisAlignment.start,
-  //         children: <Widget>[
-  //           TableEventsExample(),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-  Widget build (BuildContext context){
+  @override
+  Widget build(BuildContext context) {
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Container(
-        child: TableEventsExample(),
+      body: Center(
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                 SizedBox(height: 16),
+                Text(
+                  'Home',
+                  style: TextStyle(
+                      color: LightColor.orange,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox( height: 20,),
+                Container(
+                  child: TableEventsExample(),
+                  height: height * .52,
+                  width: width * .9,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                ),
+                SizedBox( height: 10,),
+                Container(
+                  height: height * .25,
+                  width: width * .9,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
-  
+  // Widget build (BuildContext context){
+  //   return Scaffold(
+  //     body: Container(
+  //       child: TableEventsExample(),
+  //     ),
+  //   );
+  // }
+
 }

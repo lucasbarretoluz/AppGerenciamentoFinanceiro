@@ -81,99 +81,60 @@ class _TableEventsExampleState extends State<TableEventsExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('TableCalendar - Events'),
-      // ),
-
-      body: Container(
-        child: Column(
-          children: [
-            TableCalendar<Event>(
-              locale: 'pt_BR',
-              firstDay: DateTime.utc(2010, 10, 20),
-              lastDay: DateTime.utc(2040, 10, 20),
-              focusedDay: _focusedDay,
-              availableCalendarFormats: const {
-                CalendarFormat.month: '1 Mês',
-                CalendarFormat.twoWeeks: '14 Dias',
-                CalendarFormat.week: '7 Dias'
-              },
-              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-              rangeStartDay: _rangeStart,
-              rangeEndDay: _rangeEnd,
-              calendarFormat: _calendarFormat,
-              rangeSelectionMode: _rangeSelectionMode,
-              // eventLoader: _getEventsForDay,
-              startingDayOfWeek: StartingDayOfWeek.sunday,
-              calendarStyle: CalendarStyle(
-                todayTextStyle: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                ),
-                isTodayHighlighted: true,
-                selectedDecoration: BoxDecoration(
-                  color: Colors.blue,
-                  shape: BoxShape.circle,
-                ),
-                selectedTextStyle: TextStyle(fontSize: 20, color: Colors.white),
-                todayDecoration: BoxDecoration(
-                  color: LightColor.orange,
-                  shape: BoxShape.circle,
-                ),
-              ),
-              headerStyle: HeaderStyle(
-                titleCentered: true,
-                formatButtonShowsNext: false,
-                formatButtonDecoration: BoxDecoration(
-                  color: LightColor.orange, //trocar a cor dps
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                formatButtonTextStyle: TextStyle(color: Colors.white),
-              ),
-              onDaySelected: _onDaySelected,
-              onRangeSelected: _onRangeSelected,
-              onFormatChanged: (format) {
-                if (_calendarFormat != format) {
-                  setState(() {
-                    _calendarFormat = format;
-                  });
-                }
-              },
-              onPageChanged: (focusedDay) {
-                _focusedDay = focusedDay;
-              },
-            ),
-            const SizedBox(height: 8.0),
-            // Expanded(
-            //   child: ValueListenableBuilder<List<Event>>(
-            //     valueListenable: _selectedEvents,
-            //     builder: (context, value, _) {
-            //       return ListView.builder(
-            //         itemCount: value.length,
-            //         itemBuilder: (context, index) {
-            //           return Container(
-            //             margin: const EdgeInsets.symmetric(
-            //               horizontal: 12.0,
-            //               vertical: 4.0,
-            //             ),
-            //             decoration: BoxDecoration(
-            //               border: Border.all(),
-            //               borderRadius: BorderRadius.circular(12.0),
-            //             ),
-            //             child: ListTile(
-            //               onTap: () => print('${value[index]}'),
-            //               title: Text('${value[index]}'),
-            //             ),
-            //           );
-            //         },
-            //       );
-            //     },
-            //   ),
-            // ),
-          ],
+    return TableCalendar<Event>(
+      locale: 'pt_BR',
+      firstDay: DateTime.utc(2010, 10, 20),
+      lastDay: DateTime.utc(2040, 10, 20),
+      focusedDay: _focusedDay,
+      availableCalendarFormats: const {
+        CalendarFormat.month: '1 Mês',
+        CalendarFormat.twoWeeks: '14 Dias',
+        CalendarFormat.week: '7 Dias'
+      },
+      selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+      rangeStartDay: _rangeStart,
+      rangeEndDay: _rangeEnd,
+      calendarFormat: _calendarFormat,
+      rangeSelectionMode: _rangeSelectionMode,
+      // eventLoader: _getEventsForDay,
+      startingDayOfWeek: StartingDayOfWeek.sunday,
+      calendarStyle: CalendarStyle(
+        todayTextStyle: TextStyle(
+          fontSize: 20,
+          color: Colors.white,
+        ),
+        isTodayHighlighted: true,
+        selectedDecoration: BoxDecoration(
+          color: Colors.blue,
+          shape: BoxShape.circle,
+        ),
+        selectedTextStyle: TextStyle(fontSize: 20, color: Colors.white),
+        todayDecoration: BoxDecoration(
+          color: LightColor.orange,
+          shape: BoxShape.circle,
         ),
       ),
+      headerStyle: HeaderStyle(
+        titleCentered: true,
+        formatButtonShowsNext: false,
+        formatButtonDecoration: BoxDecoration(
+          color: LightColor.orange, //trocar a cor dps
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        formatButtonTextStyle: TextStyle(color: Colors.white),
+      ),
+      onDaySelected: _onDaySelected,
+      onRangeSelected: _onRangeSelected,
+      onFormatChanged: (format) {
+        if (_calendarFormat != format) {
+          setState(() {
+            _calendarFormat = format;
+          });
+        }
+      },
+      onPageChanged: (focusedDay) {
+        _focusedDay = focusedDay;
+      },
     );
   }
 }
