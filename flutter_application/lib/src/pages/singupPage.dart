@@ -16,7 +16,7 @@ class _SingupState extends State<Singup> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-
+  final FirebaseAuth auth = FirebaseAuth.instance;
   var loading = false;
 
   @override
@@ -116,6 +116,12 @@ class _SingupState extends State<Singup> {
     );
   }
 
+//   void inputData() {
+//   final User? user = auth.currentUser;
+//   final uid = user!.uid;
+//   // here you write the codes to input the data into firestore
+// }
+
   String? _requiredValidator(String? text) {
     if (text == null || text.trim().isEmpty) {
       return 'Este campo é requerido.';
@@ -134,7 +140,10 @@ class _SingupState extends State<Singup> {
   }
 
   Future _singUp() async {
-    
+
+    final User? user = auth.currentUser;
+    final uid = user!.uid;
+
     setState(() {
       loading = true;
     });
@@ -143,21 +152,11 @@ class _SingupState extends State<Singup> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-    
-      
-      // final userDoc =
-      //     await FirebaseFirestore.instance.collection('users').doc().get();
-
-      // await FirebaseFirestore.instance.collection('users').doc(uid).add({
-      //   'email': _emailController.text,
-      //   'name': _nameController.text,
-      //   //'Id_usuario': userDoc
-      // });
 
       await FirebaseFirestore.instance.collection('users').add({
         'email': _emailController.text,
         'name': _nameController.text,
-        //'Id_usuario': userDoc
+        'Id_usuario': uid
       });
 
       await showDialog(
@@ -181,6 +180,7 @@ class _SingupState extends State<Singup> {
       });
     }
   }
+  
 
   void _handleSingUpError(FirebaseAuthException e) {
     String messageToDisplay;
