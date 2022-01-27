@@ -116,11 +116,6 @@ class _SingupState extends State<Singup> {
     );
   }
 
-//   void inputData() {
-//   final User? user = auth.currentUser;
-//   final uid = user!.uid;
-//   // here you write the codes to input the data into firestore
-// }
 
   String? _requiredValidator(String? text) {
     if (text == null || text.trim().isEmpty) {
@@ -141,24 +136,24 @@ class _SingupState extends State<Singup> {
 
   Future _singUp() async {
 
-    final User? user = auth.currentUser;
-    final uid = user!.uid;
-
     setState(() {
       loading = true;
     });
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+     var result =  await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
+       final User user = result.user!;
+       final iduid = user.uid;
 
-      await FirebaseFirestore.instance.collection('users').add({
+      await FirebaseFirestore.instance.collection('users').doc(iduid).set({
         'email': _emailController.text,
         'name': _nameController.text,
-        'Id_usuario': uid
+        'Id_usuario': iduid
       });
-
+      
+       
       await showDialog(
           context: context,
           builder: (context) => AlertDialog(
