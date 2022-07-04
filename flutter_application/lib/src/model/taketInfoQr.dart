@@ -6,23 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as parser;
 import 'package:html/dom.dart' as dom;
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final url3 =
-      'https://www.sefaz.rs.gov.br/ASP/AAE_ROOT/NFE/SAT-WEB-NFE-NFC_QRCODE_1.asp?p=43220175315333008860655180002358681048579174|2|1|1|43640DE055B273590F522A46C3AC047E2FE6DCF2';
-  final url2 =
-      'https://www.sefaz.rs.gov.br/ASP/AAE_ROOT/NFE/SAT-WEB-NFE-NFC_QRCODE_1.asp?p=43211213574594050371650040004854831160333095|2|1|2|0A521EEEA6BE666F54050D5AB289852571E9E64D';
-
-  var _postsJson = {};
-
-  // Future<Map> capturaItens() async {
-  Future capturaItens(final contentString) async {
+Future capturaItens(final contentString) async {
     var positionArray = 0;
     var itensCompra = {}; //armazena as informações finais dos itens comprados
     var infoItens = ['codigo', 'decricao', 'qntd', 'tipo', 'vUnit', 'vTotal'];
@@ -144,29 +128,7 @@ class _MyAppState extends State<MyApp> {
 
     test = 'InfoNota: $jsonInfo InfoItens: $jsonItens';
 
-    print(test);
+    //print(test);
 
     return test;
   }
-
-  @override
-  void initState() {
-    super.initState();
-    capturaItens(url2);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: ListView.builder(
-          itemCount: _postsJson.length,
-          itemBuilder: (contex, i) {
-            final post = _postsJson[i];
-            return Text("Title: ${post["title"]}\n Body: ${post["body"]}\n\n");
-          },
-        ),
-      ),
-    );
-  }
-}

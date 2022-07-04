@@ -147,6 +147,8 @@ class _SingupState extends State<Singup> {
        final User user = result.user!;
        final iduid = user.uid;
 
+       print(iduid); //testar depois se esta pegando o usuario certo.
+
       await FirebaseFirestore.instance.collection('users').doc(iduid).set({
         'email': _emailController.text,
         'name': _nameController.text,

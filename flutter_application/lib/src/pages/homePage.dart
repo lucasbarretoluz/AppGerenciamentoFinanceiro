@@ -15,7 +15,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late double height, width;
+  late double heightScreen, widthScreen;
 
   Widget _icon(IconData icon, {Color color = LightColor.iconColor}) {
     return Container(
@@ -33,15 +33,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    height = MediaQuery.of(context).size.height;
-    width = MediaQuery.of(context).size.width;
+    heightScreen = MediaQuery.of(context).size.height;
+    widthScreen = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Center(
         child: Stack(
           children: [
             Column(
               children: [
-                 SizedBox(height: 16),
+                 SizedBox(height: heightScreen * .16), //testar para deixar responsivo
                 Text(
                   'Home',
                   style: TextStyle(
@@ -49,20 +49,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       fontSize: 30,
                       fontWeight: FontWeight.w600),
                 ),
-                SizedBox( height: 20,),
+                SizedBox( height: heightScreen * .20,), //testar para deixar responsivo
                 Container(
                   child: TableEventsExample(),
-                  height: height * .52,
-                  width: width * .9,
+                  height: heightScreen * .52,
+                  width: widthScreen * .9,
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
                     borderRadius: BorderRadius.circular(40),
                   ),
                 ),
-                SizedBox( height: 10,),
+                SizedBox( height:  heightScreen * .10,),  //testar para deixar responsivo
                 Container(
-                  height: height * .25,
-                  width: width * .9,
+                  height: heightScreen * .25,
+                  width: widthScreen * .9,
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(40),
